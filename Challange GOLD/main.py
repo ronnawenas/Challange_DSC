@@ -9,19 +9,16 @@ from flasgger import swag_from
 
 app = Flask(__name__)
 
-"""Review: Good, penempatan read data diimplementasi sesuai yang disarankn yah
-tujuan ditaruh diatas setelah import library buat mudahin trace code kalau ada update data
-"""
 #load dari data tweet
-data = pd.read_csv(r"DATA/data.csv", encoding="latin-1")
+data = pd.read_csv(r"D:\Binar\DSC-Repository\Challange GOLD\data.csv", encoding="latin-1")
 
 #Load dari data Kamus Alay
-alay_dict = pd.read_csv(r"DATA/new_kamusalay.csv", encoding="latin-1", header=None)
+alay_dict = pd.read_csv(r"D:\Binar\DSC-Repository\Challange GOLD\new_kamusalay.csv", encoding="latin-1", header=None)
 alay_dict = alay_dict.rename(columns={0: 'original', 
                                       1: 'replacement'})
 
 #Load dari data Abusive
-abusive_dict = pd.read_csv("DATA/abusive.csv")
+abusive_dict = pd.read_csv(r"D:\Binar\DSC-Repository\Challange GOLD\abusive.csv")
 
 #Cleaning preprocessing
 def lowercase(text):
@@ -42,22 +39,6 @@ def remove_nonaplhanumeric(text):
 alay_dict_map = dict(zip(alay_dict['original'], alay_dict['replacement']))
 def normalize_alay(text):
     return ' '.join([alay_dict_map[word] if word in alay_dict_map else word for word in text.split(' ')])
-
-"""Review: ini masih eror. StopweordRemovalFactory buat apa ya? kalau mau dipake pastiin sudah di import library nya
-silahkan install lib berikut: pip3 install stopwords
-kalau nggk dipakai dalam preprocess(text) lebih baik dihapus aja karna akan memakan memory ketika execute
-"""
-# def stopword_remove(teks): 
-#     from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-#     stop_factory = StopWordRemoverFactory()
-#     data = stop_factory.get_stop_words()
-#     teks = teks.split()
-#     teks_normal = ''
-#     for str in teks:
-#         if(bool(str not in data)):
-#             teks_normal = teks_normal + ' ' + str
-#     return teks_normal
-
 
 def preprocess(text):
     text = lowercase(text) # 1
@@ -93,6 +74,7 @@ swagger_config = {
     "swagger_ui": True,
     "specs_route": "/docs/"
 }
+
 swagger = Swagger(app, template=swagger_template, 
                   config=swagger_config)
 
@@ -101,13 +83,12 @@ swagger = Swagger(app, template=swagger_template,
 def hello_world():
     json_response = {
         'status_code': 200,
-        'description': "DISINI KASIH JUDUL APLIKASI SESUAI REPORT",
-        'data': "Binar Academy - Nama - DSC 7",
+        'description': "ANALISA TWEET BAHASA INDONESIA MENGGUNAKAN METODE DESCRIPTIVE ANALISIS",
+        'data': "Binar Academy - Ronna Wenas - DSC 7",
     }
 
     response_data = jsonify(json_response)
     return response_data
-
 # End Flask Template
 
 @swag_from("docs/text_processing.yml", methods=['POST'])
