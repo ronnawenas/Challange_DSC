@@ -9,17 +9,19 @@ from flasgger import swag_from
 
 app = Flask(__name__)
 
-
+"""Review: Good, penempatan read data diimplementasi sesuai yang disarankn yah
+tujuan ditaruh diatas setelah import library buat mudahin trace code kalau ada update data
+"""
 #load dari data tweet
-data = pd.read_csv(r"data.csv", encoding="latin-1")
+data = pd.read_csv(r"DATA/data.csv", encoding="latin-1")
 
 #Load dari data Kamus Alay
-alay_dict = pd.read_csv(r"new_kamusalay.csv", encoding="latin-1", header=None)
+alay_dict = pd.read_csv(r"DATA/new_kamusalay.csv", encoding="latin-1", header=None)
 alay_dict = alay_dict.rename(columns={0: 'original', 
                                       1: 'replacement'})
 
 #Load dari data Abusive
-abusive_dict = pd.read_csv("abusive.csv")
+abusive_dict = pd.read_csv("DATA/abusive.csv")
 
 #Cleaning preprocessing
 def lowercase(text):
@@ -41,15 +43,20 @@ alay_dict_map = dict(zip(alay_dict['original'], alay_dict['replacement']))
 def normalize_alay(text):
     return ' '.join([alay_dict_map[word] if word in alay_dict_map else word for word in text.split(' ')])
 
-def stopword_remove(teks):
-    stop_factory = StopWordRemoverFactory()
-    data = stop_factory.get_stop_words()
-    teks = teks.split()
-    teks_normal = ''
-    for str in teks:
-        if(bool(str not in data)):
-            teks_normal = teks_normal + ' ' + str
-    return teks_normal
+"""Review: ini masih eror. StopweordRemovalFactory buat apa ya? kalau mau dipake pastiin sudah di import library nya
+silahkan install lib berikut: pip3 install stopwords
+kalau nggk dipakai dalam preprocess(text) lebih baik dihapus aja karna akan memakan memory ketika execute
+"""
+# def stopword_remove(teks): 
+#     from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+#     stop_factory = StopWordRemoverFactory()
+#     data = stop_factory.get_stop_words()
+#     teks = teks.split()
+#     teks_normal = ''
+#     for str in teks:
+#         if(bool(str not in data)):
+#             teks_normal = teks_normal + ' ' + str
+#     return teks_normal
 
 
 def preprocess(text):
@@ -125,8 +132,9 @@ def text_processing_file():
     #Upload File
     file = request.files.getlist('file')[0]
 
-    #Import file csv ke pandas
-    data = pd.read_csv(file)
+    """Review: tambahin encoding='latin-1' sesuai hasil solving bareng2 di live FD"""
+    #Import file csv ke pandas.
+    data = pd.read_csv(file, encoding='latin-1')
 
     #ambil teks yang akan diproses dalam format list
     # text = data.text.to_list()

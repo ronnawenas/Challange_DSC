@@ -1,0 +1,11 @@
+NOTE:
+dari  pembuatan analisa gold_challange.ipynb udah ok. Make sure kalau ada tanda kiriting kuning di code kita 
+itu artinya ada data variable yang belum didefinisikan
+
+hasil review:
+1. cek lagi gold_challange.ipynb nya ada yang harus dilengkapi karna ada varaiable code yang terdapat kriting kuning
+2. perlu lagi cara baca setiap baris code nya. Ga perlu hafal coding, dilatih cara pembacaan nya dulu aja
+3. Lupa menambahkan folder /docs buat endpoint nya makannya masih eror
+4. dicoba running lagi dan pelajari setiap baris code nya dan navigasi setiap file yang di assign di code nya yahh.
+
+Good! Overall progress nya udah oke.
